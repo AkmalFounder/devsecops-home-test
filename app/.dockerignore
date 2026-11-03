@@ -1,0 +1,28 @@
+# Git
+.git
+.gitignore
+
+# Environment variables and secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+id_rsa
+secrets/
+
+# Node dependencies and build artifacts
+node_modules
+npm-debug.log
+yarn-error.log
+
+# CI/CD and Terraform configs
+terraform/
+.gitlab-ci.yml
+.github/
+
+# Documentation and tests
+*.md
+docs/
+evidence/
+tests/

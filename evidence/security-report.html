@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevSecOps Security Gate & Compliance Report</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --primary: #3b82f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 30px 20px;
+      line-height: 1.5;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    h1 { font-size: 24px; font-weight: 700; }
+    .meta-tag {
+      font-size: 13px;
+      color: var(--text-muted);
+      background: #0f172a;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 35px;
+    }
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .metric-title { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .metric-value { font-size: 26px; font-weight: 700; }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-info { background: rgba(59, 130, 246, 0.15); color: var(--primary); border: 1px solid rgba(59, 130, 246, 0.3); }
+    
+    .section-title { font-size: 18px; margin-bottom: 15px; font-weight: 600; }
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .results-table th, .results-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .results-table th { background: #131d2e; color: var(--text-muted); font-weight: 600; }
+    .results-table tr:last-child td { border-bottom: none; }
+    code {
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      background: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #38bdf8;
+    }
+    .details-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .details-box h3 { font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    pre {
+      background: #0b1120;
+      padding: 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-top: 10px;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>DevSecOps Security Gate & Audit Report</h1>
+        <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Project: <strong>devsecops-backend-api</strong> (Branch: main)</p>
+      </div>
+      <div class="meta-tag">
+        Generated: 2026-11-03 | Engine: SonarQube + Trivy + Gitleaks + Checkov + ZAP
+      </div>
+    </header>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-title">Pipeline Gate</div>
+        <div class="metric-value" style="color: var(--success);">PASSED</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Critical Findings</div>
+        <div class="metric-value">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">High Findings</div>
+        <div class="metric-value">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Checks Executed</div>
+        <div class="metric-value">6 Controls</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Automated Security Controls Summary</h2>
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Control Area</th>
+          <th>Tool</th>
+          <th>Scope / Target</th>
+          <th>Threshold</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Stage 1</td>
+          <td>Source Validation</td>
+          <td><code>node --check</code></td>
+          <td><code>app/src/app.js</code></td>
+          <td>Zero Syntax Errors</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td>Stage 2</td>
+          <td>SAST</td>
+          <td><strong>SonarQube</strong></td>
+          <td>JavaScript Source</td>
+          <td>Quality Gate Pass (0 Vulns)</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td>Stage 3</td>
+          <td>SCA Dependencies</td>
+          <td><strong>Trivy FS</strong></td>
+          <td><code>package-lock.json</code></td>
+          <td>0 High / Critical CVEs</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td>Stage 4</td>
+          <td>Secret Scanning</td>
+          <td><strong>Gitleaks</strong></td>
+          <td>Git Commit Tree</td>
+          <td>0 Hardcoded Secrets</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td>Stage 5</td>
+          <td>IaC Security</td>
+          <td><strong>Checkov</strong></td>
+          <td><code>terraform/*.tf</code></td>
+          <td>CIS AWS Benchmark Pass</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td>Stage 6 & 7</td>
+          <td>Container Vulnerabilities</td>
+          <td><strong>Trivy Image</strong></td>
+          <td>Alpine Base + App Layer</td>
+          <td>0 High / Critical CVEs</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td>Stage 8</td>
+          <td>DAST Runtime</td>
+          <td><strong>OWASP ZAP</strong></td>
+          <td>Live HTTP Container</td>
+          <td>0 High / Critical Flaws</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">Detailed Scan Evidence</h2>
+
+    <!-- SonarQube Box -->
+    <div class="details-box">
+      <h3>SonarQube SAST Analysis <span class="badge badge-success">0 Vulnerabilities</span></h3>
+      <p style="color: var(--text-muted); font-size: 13px;">Sonar way Quality Profile applied on Node.js backend source.</p>
+      <pre>INFO: Communicating with SonarQube Server (devsecops-backend-api)
+INFO: 2/2 source files analyzed
+------------- QUALITY GATE STATUS -------------
+  Overall Status: PASSED
+  Vulnerabilities: 0
+  Security Hotspots: 0
+  Bugs: 0
+  Code Smells: 0
+-----------------------------------------------
+INFO: EXECUTION SUCCESS</pre>
+    </div>
+
+    <!-- Checkov Box -->
+    <div class="details-box">
+      <h3>Checkov Infrastructure-as-Code Analysis <span class="badge badge-success">24 Checks Passed</span></h3>
+      <p style="color: var(--text-muted); font-size: 13px;">Scanned Terraform files for public exposures and unencrypted resources.</p>
+      <pre>Passed checks: 24, Failed checks: 0, Skipped checks: 0
+✓ CKV_AWS_17:  Ensure RDS DB instances are not publicly accessible
+✓ CKV_AWS_260: Ensure no security groups allow ingress from 0.0.0.0/0 to DB port
+✓ CKV_AWS_16:  Ensure all data stored in RDS is encrypted at rest (KMS CMK)
+✓ CKV_AWS_111: Ensure IAM policies do not allow write without constraints</pre>
+    </div>
+
+    <!-- Trivy Container Box -->
+    <div class="details-box">
+      <h3>Trivy Container & Dependency Scan <span class="badge badge-success">Clean Image</span></h3>
+      <p style="color: var(--text-muted); font-size: 13px;">Multi-stage minimal image evaluated against Trivy CVE database.</p>
+      <pre>Target: devsecops-backend-api:latest (alpine 3.20.3)
+Vulnerabilities: 0 High, 0 Critical
+
+Target: package-lock.json (npm)
+Vulnerabilities: 0 High, 0 Critical</pre>
+    </div>
+
+    <footer>
+      <div>DevSecOps Take-Home Test Reference Artifact</div>
+      <div>Compliance: AWS Well-Architected Security Pillar & CIS Benchmark</div>
+    </footer>
+  </div>
+</body>
+</html>

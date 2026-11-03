@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" width="100%" height="100%">
+  <defs>
+    <style>
+      .title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #1a237e; }
+      .subtitle { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; fill: #546e7a; }
+      .box-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #263238; }
+      .desc-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #455a64; }
+      .tag-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; font-weight: bold; fill: #ffffff; }
+      .flow-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #0277bd; }
+      .arrow { stroke: #0288d1; stroke-width: 2.5; fill: none; marker-end: url(#arrowhead); }
+      .dashed-arrow { stroke: #7b1fa2; stroke-width: 2; stroke-dasharray: 4,4; fill: none; marker-end: url(#arrowhead-purple); }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0288d1" />
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#7b1fa2" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="650" fill="#f8fafc" rx="12" />
+
+  <!-- Header -->
+  <text x="30" y="40" class="title">DevSecOps Secure AWS Reference Architecture</text>
+  <text x="30" y="60" class="subtitle">Multi-tier VPC, AWS ECS Fargate, WAF, Least-Privilege IAM &amp; Envelope KMS Encryption</text>
+
+  <!-- Internet / External Zone -->
+  <rect x="30" y="80" width="140" height="540" fill="#ffffff" stroke="#cfd8dc" stroke-width="2" rx="8" />
+  <text x="45" y="105" class="box-label">Internet Zone</text>
+  
+  <rect x="45" y="140" width="110" height="60" fill="#e3f2fd" stroke="#90caf9" rx="6" />
+  <text x="55" y="165" class="desc-text" font-weight="bold">Public Clients</text>
+  <text x="55" y="185" class="desc-text">HTTPS Traffic</text>
+
+  <rect x="45" y="320" width="110" height="80" fill="#ede7f6" stroke="#b39ddb" rx="6" />
+  <text x="55" y="345" class="desc-text" font-weight="bold">GitLab CI/CD</text>
+  <text x="55" y="365" class="desc-text">OIDC Federation</text>
+  <text x="55" y="385" class="desc-text">Short-Lived STS</text>
+
+  <!-- AWS Cloud Boundary -->
+  <rect x="190" y="80" width="780" height="540" fill="#ffffff" stroke="#1565c0" stroke-width="2.5" rx="8" />
+  <rect x="200" y="88" width="130" height="22" fill="#1565c0" rx="4" />
+  <text x="210" y="103" class="tag-text">AWS Cloud Account</text>
+
+  <!-- AWS Edge & WAF -->
+  <rect x="210" y="130" width="90" height="80" fill="#fff3e0" stroke="#ffb74d" stroke-width="2" rx="6" />
+  <text x="220" y="155" class="box-label" fill="#e65100">AWS WAF</text>
+  <text x="220" y="175" class="desc-text">• OWASP Top 10</text>
+  <text x="220" y="195" class="desc-text">• Rate Limiting</text>
+
+  <!-- VPC Container -->
+  <rect x="320" y="120" width="630" height="370" fill="#f1f8e9" stroke="#81c784" stroke-width="2" rx="8" />
+  <text x="335" y="142" class="box-label" fill="#2e7d32">Amazon VPC (10.0.0.0/16)</text>
+
+  <!-- Tier 1: Public Subnets -->
+  <rect x="335" y="160" width="170" height="310" fill="#ffffff" stroke="#c8e6c9" rx="6" />
+  <text x="345" y="180" class="desc-text" font-weight="bold">Public Subnets (AZ1 &amp; AZ2)</text>
+  
+  <rect x="345" y="200" width="150" height="75" fill="#e8eaf6" stroke="#9fa8da" rx="5" />
+  <text x="355" y="225" class="desc-text" font-weight="bold">Application Load Balancer</text>
+  <text x="355" y="245" class="desc-text">TLS 1.3 Termination</text>
+  <text x="355" y="260" class="desc-text">Drop Bad Headers</text>
+
+  <rect x="345" y="360" width="150" height="60" fill="#fbe9e7" stroke="#ffab91" rx="5" />
+  <text x="355" y="385" class="desc-text" font-weight="bold">NAT Gateway</text>
+  <text x="355" y="405" class="desc-text">Outbound Egress Only</text>
+
+  <!-- Tier 2: Private App Subnets (ECS Fargate) -->
+  <rect x="520" y="160" width="230" height="310" fill="#ffffff" stroke="#c8e6c9" rx="6" />
+  <text x="530" y="180" class="desc-text" font-weight="bold">Private App Subnets (ECS Fargate)</text>
+
+  <rect x="530" y="200" width="210" height="95" fill="#e0f2f1" stroke="#80cbc4" rx="5" />
+  <text x="540" y="225" class="desc-text" font-weight="bold">ECS Task 1 (Node.js API)</text>
+  <text x="540" y="245" class="desc-text">• Non-root User (node)</text>
+  <text x="540" y="265" class="desc-text">• MicroVM Isolation</text>
+  <text x="540" y="280" class="desc-text">• Port 8080 (SG Chained)</text>
+
+  <rect x="530" y="310" width="210" height="95" fill="#e0f2f1" stroke="#80cbc4" rx="5" />
+  <text x="540" y="335" class="desc-text" font-weight="bold">ECS Task 2 (Node.js API)</text>
+  <text x="540" y="355" class="desc-text">• High Availability AZ2</text>
+  <text x="540" y="375" class="desc-text">• Memory-injected secrets</text>
+  <text x="540" y="390" class="desc-text">• Zero Public IP</text>
+
+  <!-- Tier 3: Private Database Subnets -->
+  <rect x="765" y="160" width="170" height="310" fill="#ffffff" stroke="#c8e6c9" rx="6" />
+  <text x="775" y="180" class="desc-text" font-weight="bold">Private Data Subnets (RDS)</text>
+
+  <rect x="775" y="230" width="150" height="110" fill="#fff8e1" stroke="#ffe082" rx="5" />
+  <text x="785" y="255" class="desc-text" font-weight="bold">Amazon Aurora / RDS</text>
+  <text x="785" y="275" class="desc-text">• PostgreSQL Port 5432</text>
+  <text x="785" y="295" class="desc-text">• Ingress strictly from ECS</text>
+  <text x="785" y="315" class="desc-text">• KMS Encrypted Storage</text>
+  <text x="785" y="330" class="desc-text">• Zero Internet Ingress</text>
+
+  <!-- Management & Security Services Tier (Lower Box) -->
+  <rect x="320" y="505" width="630" height="100" fill="#f3e5f5" stroke="#ce93d8" stroke-width="2" rx="8" />
+  <text x="335" y="525" class="box-label" fill="#6a1b9a">Security, Secrets &amp; Audit Services (PrivateLink Endpoints)</text>
+
+  <rect x="335" y="535" width="140" height="60" fill="#ffffff" stroke="#e1bee7" rx="5" />
+  <text x="345" y="555" class="desc-text" font-weight="bold">Secrets Manager</text>
+  <text x="345" y="575" class="desc-text">KMS Encrypted &amp; Rotated</text>
+
+  <rect x="490" y="535" width="135" height="60" fill="#ffffff" stroke="#e1bee7" rx="5" />
+  <text x="500" y="555" class="desc-text" font-weight="bold">AWS KMS (CMK)</text>
+  <text x="500" y="575" class="desc-text">Annual Key Rotation</text>
+
+  <rect x="640" y="535" width="140" height="60" fill="#ffffff" stroke="#e1bee7" rx="5" />
+  <text x="650" y="555" class="desc-text" font-weight="bold">CloudWatch Logs</text>
+  <text x="650" y="575" class="desc-text">Encrypted Audit Logs</text>
+
+  <rect x="795" y="535" width="140" height="60" fill="#ffffff" stroke="#e1bee7" rx="5" />
+  <text x="805" y="555" class="desc-text" font-weight="bold">AWS CloudTrail</text>
+  <text x="805" y="575" class="desc-text">API Call Immutability</text>
+
+  <!-- Flow Arrows -->
+  <path d="M 155 170 L 210 170" class="arrow" />
+  <path d="M 300 170 L 345 235" class="arrow" />
+  <path d="M 495 235 L 530 235" class="arrow" />
+  <path d="M 495 245 L 530 335" class="arrow" />
+  <path d="M 740 245 L 775 270" class="arrow" />
+  <path d="M 740 335 L 775 290" class="arrow" />
+
+  <!-- CI/CD and Secret Ingestion Dashed Flows -->
+  <path d="M 155 360 L 320 545" class="dashed-arrow" />
+  <path d="M 580 405 L 430 535" class="dashed-arrow" />
+</svg>

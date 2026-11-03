@@ -1,0 +1,65 @@
+flowchart TD
+    subgraph Internet_Zone [" Internet (Public Zone) "]
+        Client["Users / API Clients"]
+        GitLab["CI/CD Pipeline (GitLab CI / GitHub Actions)"]
+    end
+
+    subgraph AWS_Cloud [" AWS Cloud Account (Production) "]
+        CloudTrail["AWS CloudTrail<br/>(Immutable Audit Trail)"]
+        KMS["AWS KMS (CMK)<br/>(Envelope Encryption)"]
+        ECR["Amazon ECR<br/>(Encrypted & Immutable Tags)"]
+
+        subgraph Edge_Security [" Edge Security Tier "]
+            WAF["AWS WAF<br/>(OWASP Core Rules, Rate Limiting, GeoIP)"]
+        end
+
+        subgraph VPC [" Amazon VPC (10.0.0.0/16) "]
+            IGW["Internet Gateway"]
+            
+            subgraph Public_Subnets [" Public Subnets (AZ1 & AZ2) "]
+                ALB["Application Load Balancer (ALB)<br/>(TLS 1.3 Termination, Dropped Bad Headers)"]
+                NAT["NAT Gateway<br/>(Outbound Egress Only)"]
+            end
+
+            subgraph Private_App_Subnets [" Private Application Subnets (AZ1 & AZ2) "]
+                ECS1["ECS Fargate Task 1<br/>(Non-root container, Port 8080)"]
+                ECS2["ECS Fargate Task 2<br/>(Non-root container, Port 8080)"]
+            end
+
+            subgraph Private_Data_Subnets [" Private Database Subnets (AZ1 & AZ2) "]
+                RDS["Amazon Aurora / RDS PostgreSQL<br/>(KMS Encrypted Storage, Multi-AZ)"]
+            end
+
+            subgraph VPC_Endpoints [" AWS PrivateLink (VPC Endpoints) "]
+                VPC_SM["Secrets Manager Endpoint"]
+                VPC_KMS["KMS Endpoint"]
+                VPC_CW["CloudWatch Logs Endpoint"]
+                VPC_ECR["ECR API & DKR Endpoints"]
+            end
+        end
+
+        subgraph Management_Plane [" Security & Secrets Management "]
+            SM["AWS Secrets Manager<br/>(Encrypted via KMS CMK, Auto-Rotation)"]
+            CW["Amazon CloudWatch Logs & Alarms"]
+        end
+    end
+
+    %% Network & Request Flows
+    Client -->|HTTPS :443| WAF
+    WAF -->|Inspected Traffic| ALB
+    ALB -->|HTTP :8080 (SG Chained)| ECS1
+    ALB -->|HTTP :8080 (SG Chained)| ECS2
+    ECS1 -->|Port :5432| RDS
+    ECS2 -->|Port :5432| RDS
+
+    %% Private AWS API Communications
+    ECS1 -.->|Read Secrets at Startup| VPC_SM
+    ECS2 -.->|Read Secrets at Startup| VPC_SM
+    VPC_SM -.-> SM
+    VPC_KMS -.-> KMS
+    VPC_CW -.-> CW
+
+    %% CI/CD Deployment Flow
+    GitLab -.->|OIDC AssumeRole (Short-lived)| AWS_Cloud
+    GitLab -.->|Push Scanned Image| ECR
+    GitLab -.->|Update ECS Service| ECS1

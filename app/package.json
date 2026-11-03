@@ -1,0 +1,22 @@
+{
+  "name": "devsecops-secure-backend-api",
+  "version": "1.0.0",
+  "description": "Secure, containerized REST API demonstrating DevSecOps best practices",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "devsecops",
+    "aws",
+    "security",
+    "container-hardening"
+  ],
+  "author": "DevSecOps Candidate",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.1",
+    "helmet": "^8.0.0"
+  }
+}

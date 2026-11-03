@@ -1,0 +1,16 @@
+# Example Terraform Variables File (Redacted - safe for Git)
+aws_region   = "ap-southeast-1"
+environment  = "production"
+project_name = "devsecops-backend"
+vpc_cidr     = "10.0.0.0/16"
+
+# Container Configuration
+container_image = "123456789012.dkr.ecr.ap-southeast-1.amazonaws.com/devsecops-backend:1.0.0"
+container_port  = 8080
+
+tags = {
+  Project     = "DevSecOps-API"
+  Environment = "production"
+  Owner       = "SecurityTeam"
+  ManagedBy   = "Terraform"
+}
