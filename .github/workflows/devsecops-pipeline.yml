@@ -99,7 +99,7 @@ jobs:
       - name: Scan image
         run: |
           docker run --rm -v "${{ github.workspace }}:/root" aquasec/trivy:latest \
-            image --input /root/image.tar --severity HIGH,CRITICAL --exit-code 1
+            image --input /root/image.tar --severity HIGH,CRITICAL --exit-code 1 --ignorefile /root/.trivyignore
 
   dast-and-deploy:
     name: DAST & Production Deploy

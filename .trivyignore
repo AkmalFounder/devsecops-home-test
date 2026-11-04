@@ -1,0 +1,20 @@
+# Trivy Ignore File (.trivyignore)
+# Documented Policy Exceptions (Task 4 & Task 5 Scenario A)
+# Reason: Base image build-time npm dependencies not invoked by production runtime
+CVE-2026-59873
+CVE-2024-21538
+CVE-2025-64756
+CVE-2026-69192
+CVE-2026-9496
+CVE-2026-48815
+CVE-2026-23745
+CVE-2026-23950
+CVE-2026-24842
+CVE-2026-102276
+CVE-2026-102278
+CVE-2026-13149
+CVE-2026-14257
+CVE-2026-69152
+CVE-2026-26996
+CVE-2026-27903
+CVE-2026-27904

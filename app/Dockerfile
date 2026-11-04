@@ -11,8 +11,9 @@ ENV NODE_ENV=production \
 
 WORKDIR /usr/src/app
 
-# Update OS packages and remove apk cache
-RUN apk update && apk upgrade --no-cache && rm -rf /var/cache/apk/* /tmp/*
+# Hardening: Update OS packages and purge npm/npx/corepack from production runtime
+RUN apk update && apk upgrade --no-cache \
+    && rm -rf /var/cache/apk/* /tmp/* /usr/local/lib/node_modules /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack
 
 COPY --chown=node:node --from=dependencies /app/node_modules ./node_modules
 COPY --chown=node:node package*.json ./
