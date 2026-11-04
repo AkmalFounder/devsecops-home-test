@@ -2,7 +2,7 @@
 FROM node:20-alpine3.20 AS dependencies
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
+RUN npm install --omit=dev --ignore-scripts && npm cache clean --force
 
 # Production stage
 FROM node:20-alpine3.20 AS runner

@@ -83,8 +83,10 @@ resource "aws_db_instance" "secure_postgres" {
   password = "ManagedExternallyViaSecretsManager#2026" # Sourced securely
 
   # Auditing & Logging
-  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
-  auto_minor_version_upgrade      = true
+  enabled_cloudwatch_logs_exports     = ["postgresql", "upgrade"]
+  auto_minor_version_upgrade          = true
+  backup_retention_period             = 7
+  iam_database_authentication_enabled = true
 
   tags = {
     Name = "devsecops-production-database"
