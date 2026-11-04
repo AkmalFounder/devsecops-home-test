@@ -13,19 +13,13 @@ docker run --rm -v "${PWD}:/path" zricethezav/gitleaks:latest detect --source="/
 
 **Output:**
 ```text
-    ○
-    │╲
-    │ ○
-    ○ ░
-    ░    gitleaks
-
-12:30:15 INFO  [gitleaks] scanning...
-12:30:15 INFO  [gitleaks] scanning repository: /path
-12:30:16 INFO  [gitleaks] total commits scanned: 14
-12:30:16 INFO  [gitleaks] total files scanned: 28
-12:30:16 INFO  [gitleaks] scan completed in 420ms
-12:30:16 INFO  [gitleaks] no leaks found
+11:04PM INF 1 commits scanned.
+11:04PM INF scanned ~117844 bytes (117.84 KB) in 235ms
+11:04PM INF no leaks found
 ```
+
+![Gitleaks Secret Scan - No Leaks Found](screenshots/gitleaks-scan.png)
+
 **Status:** PASS (Exit code 0). No hardcoded credentials detected across git history and files.
 
 ---
@@ -138,6 +132,23 @@ Total: 0 (HIGH: 0, CRITICAL: 0)
 ![Trivy Image Scan Clean After Purge](screenshots/trivy-scan-after.png)
 
 **Status:** PASS (Exit code 0). 100% clean container runtime image with zero High/Critical vulnerabilities.
+
+### C. Non-Root Runtime User Verification
+In compliance with container hardening standards, the container executes under the unprivileged `node` user (UID 1000) rather than `root`:
+
+**Command:**
+```bash
+docker run --rm devsecops-backend-api:latest whoami
+```
+
+**Output:**
+```text
+node
+```
+
+![Non-Root User Verification](screenshots/container-whoami-nonroot.png)
+
+**Status:** PASS. Container executes as non-root user `node`.
 
 ---
 
