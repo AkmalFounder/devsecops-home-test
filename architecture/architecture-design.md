@@ -1,6 +1,6 @@
 # Task 1: AWS Architecture and Security Design
 
-## 1. Executive Summary & Architecture Overview
+## 1. Architecture Overview
 This document specifies the secure, resilient AWS cloud architecture for deploying a containerized backend REST API. The design adheres strictly to the **AWS Well-Architected Framework (Security Pillar)**, adopting defense-in-depth, zero-trust network segregation, immutable logging, and least-privilege identity access management.
 
 ---
