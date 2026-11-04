@@ -55,7 +55,6 @@ For full architectural details, consult [`architecture/architecture-design.md`](
 ```text
 devsecops-home-test/
 ├── README.md                          # Project documentation
-├── ACTION_PLAN.md                     # Step-by-step local execution & push guide
 ├── sonar-project.properties           # SonarQube scanner configuration
 ├── architecture/
 │   ├── architecture-design.md         # Task 1 comprehensive design answers
@@ -98,10 +97,6 @@ devsecops-home-test/
 - Node.js 20+
 - Docker Engine 24+
 - Git 2.30+
-
-### Step-by-Step Action Plan
-A dedicated, easy-to-follow run guide is available in:  
-👉 [`ACTION_PLAN.md`](ACTION_PLAN.md)
 
 ---
 
