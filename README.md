@@ -183,7 +183,7 @@ The repository includes detailed remediation notes for the home test scenarios:
 
 Two comprehensive reports are available:
 1. **Interactive HTML Dashboard**: Open [`evidence/security-report.html`](evidence/security-report.html) in any browser for an executive dashboard with status cards and tables.
-2. **Raw Log File**: Inspect [`evidence/scan-results.md`](evidence/scan-results.md) for terminal output logs from all 6 scanners.
+2. **Raw Log File & Visual Evidence**: Inspect [`evidence/scan-results.md`](evidence/scan-results.md) for terminal output logs, before-and-after remediation comparisons, and visual scan evidence from all security controls.
 
 ---
 
