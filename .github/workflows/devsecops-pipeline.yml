@@ -82,7 +82,7 @@ jobs:
       - name: Run Checkov
         run: |
           docker run --rm -v "${{ github.workspace }}:/tf" bridgecrew/checkov:latest \
-            -d /tf/terraform --config-file /tf/terraform/.checkov.yaml --output cli --soft-fail=false
+            -d /tf/terraform --config-file /tf/terraform/.checkov.yaml --output cli
 
   container-security:
     name: Container Build & Trivy Scan

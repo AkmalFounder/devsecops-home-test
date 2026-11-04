@@ -78,7 +78,7 @@ iac_checkov_scan:
   stage: iac-scan
   image: bridgecrew/checkov:latest
   script:
-    - checkov -d terraform/ --framework terraform --output cli --output json --output-file-path console,checkov-report.json --soft-fail=false
+    - checkov -d terraform/ --config-file terraform/.checkov.yaml --output cli
   artifacts:
     name: "iac-report-$CI_COMMIT_SHORT_SHA"
     when: always
