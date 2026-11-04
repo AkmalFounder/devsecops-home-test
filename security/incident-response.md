@@ -277,10 +277,19 @@ flowchart LR
 
 ---
 
-## 3. OWASP Top 10 Risks: Detection & Mitigation
+## 3. Relevant OWASP Top 10 Risks: Detection & Mitigation
 
-| OWASP Top 10 Category | Specific Threat | Pipeline Detection Method | Mitigation Strategy |
-| :--- | :--- | :--- | :--- |
-| **A01: Broken Access Control (BOLA / IDOR)** | An authenticated attacker changes `userId=101` to `userId=102` in URL/JSON and views or modifies another tenant's private data. | **DAST (ZAP)** parameter fuzzing with dual-role authentication tokens + **SAST (Semgrep)** rules checking for missing authorization checks on object queries. | Enforce server-side authorization checks verifying that the requesting user's session claims match the resource owner before database execution. |
-| **A03: Injection (SQLi / Command Injection)** | Attacker injects malicious SQL fragments into input fields to bypass auth or dump database tables. | **SAST (Semgrep)** detects string concatenation in SQL queries + **DAST (ZAP)** active SQL injection attack plugins. | Always use parameterized queries / Object-Relational Mapping (ORM) and enforce strict input validation schemas (Joi/Zod). |
-| **A05: Security Misconfiguration** | Unnecessary HTTP ports exposed, missing TLS enforcement, default passwords, or public S3/RDS storage. | **IaC Scanning (Checkov & Trivy)** on Terraform files + **DAST header scan** for missing HSTS and XSS headers. | Automated Terraform CIS benchmarks, strict Security Groups, and Node.js `helmet()` middleware. |
+### 1. A01: Broken Access Control (BOLA / IDOR)
+- **Threat**: An authenticated user modifies resource identifiers (such as changing `userId=101` to `userId=102` in an API call) to view or tamper with another tenant's private data.
+- **Detection**: DAST (OWASP ZAP) parameter fuzzing using multiple authentication tokens with different privilege levels, combined with SonarQube SAST security rules detecting missing authorization checks before data retrieval.
+- **Mitigation**: Implement strict server-side claims validation to ensure the requesting user session owns the requested record before executing queries.
+
+### 2. A03: Injection (SQL / Command Injection)
+- **Threat**: An attacker supplies malicious SQL fragments through query parameters or request bodies to bypass authentication or extract backend database tables.
+- **Detection**: SonarQube SAST rules flagging string concatenation in database statements, alongside OWASP ZAP active injection attack plugins testing API endpoints.
+- **Mitigation**: Use parameterized SQL queries, ORM frameworks, and strict input validation schemas (such as Joi or Zod middleware).
+
+### 3. A05: Security Misconfiguration
+- **Threat**: Insecure default settings, unencrypted data stores, missing HTTP security headers, or open security groups exposing ports to the internet (`0.0.0.0/0`).
+- **Detection**: Automated Checkov IaC scans on Terraform configurations, and OWASP ZAP passive scans verifying HTTP security headers (HSTS, CSP, and X-Content-Type-Options).
+- **Mitigation**: Apply automated CIS AWS benchmarks in Terraform, enforce strict chained security groups, and enable Helmet middleware in the Node.js application.

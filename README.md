@@ -1,4 +1,4 @@
-# DevSecOps Take-Home Test: Containerized API & Automated Pipeline (V2 - SonarQube)
+# DevSecOps Take-Home Test: Containerized API & Automated Pipeline
 
 This repository contains an end-to-end implementation of the DevSecOps Engineer Take-Home Test. It features a hardened Node.js backend container, an AWS reference architecture using ECS Fargate, and a complete 8-stage CI/CD security pipeline enforcing automated security gates with SonarQube, Trivy, Gitleaks, Checkov, and OWASP ZAP.
 
@@ -14,12 +14,15 @@ This repository contains an end-to-end implementation of the DevSecOps Engineer 
 7. [Incident Response & Scenarios](#7-incident-response--scenarios)
 8. [Known Limitations & Remaining Risks](#8-known-limitations--remaining-risks)
 9. [Evidence & Security Reports](#9-evidence--security-reports)
+10. [Pipeline Execution Results](#10-pipeline-execution-results)
 
 ---
 
 ## 1. Architecture Overview
 
 The backend API runs on **AWS ECS Fargate** across two availability zones inside a custom VPC. Traffic from the internet is inspected by **AWS WAF** before reaching the **Application Load Balancer (ALB)** in the public subnets. The application containers and database instances reside strictly in private subnets with zero direct internet access.
+
+![Architecture Overview](architecture/architecture_overview.drawio.png)
 
 ```mermaid
 flowchart TD
@@ -133,31 +136,32 @@ The pipeline enforces eight consecutive stages on every commit and merge request
 
 ## 6. Commands to Validate & Scan
 
-Run the entire suite locally using Docker:
+You can validate and execute the security scans using Docker:
 
 ```bash
-# 1. Secret Scanning
+# 1. Source Syntax Validation (Local)
+node --check app/src/app.js
+
+# 2. Secret Scanning (Gitleaks)
 docker run --rm -v "${PWD}:/path" zricethezav/gitleaks:latest detect --source="/path" -v
 
-# 2. SAST (SonarQube)
-docker run --rm -v "${PWD}:/usr/src" sonarsource/sonar-scanner-cli \
-  -Dsonar.projectKey=devsecops-backend-api \
-  -Dsonar.host.url="https://sonarcloud.io" \
-  -Dsonar.token="<YOUR_TOKEN>"
-
-# 3. SCA (Trivy FS)
+# 3. SCA Dependency Scan (Trivy FS)
 docker run --rm -v "${PWD}/app:/root" aquasec/trivy:latest fs --severity HIGH,CRITICAL /root
 
-# 4. IaC Scanning (Checkov)
-docker run --rm -v "${PWD}/terraform:/tf" bridgecrew/checkov:latest -d /tf --framework terraform
+# 4. Infrastructure as Code Scanning (Checkov)
+docker run --rm -v "${PWD}/terraform:/tf" bridgecrew/checkov:latest \
+  -d /tf --config-file /tf/terraform/.checkov.yaml
 
-# 5. Container Scanning (Trivy Image)
+# 5. Container Image Vulnerability Scan (Trivy Image)
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image \
   --severity HIGH,CRITICAL --exit-code 1 devsecops-backend-api:latest
 
-# 6. DAST (OWASP ZAP)
-docker run --rm -t zaproxy/zap-stable:latest zap-baseline.py \
-  -t http://host.docker.internal:8080 -r zap-report.html -I
+# 6. DAST Runtime Scan (OWASP ZAP)
+docker run --rm --network="host" -t zaproxy/zap-stable:latest zap-baseline.py \
+  -t http://127.0.0.1:8080 -r zap-report.html -I
+
+# Note on SAST (SonarQube):
+# Executed automatically in the CI/CD pipeline via GitHub Actions using sonar-project.properties.
 ```
 
 ---
@@ -185,3 +189,12 @@ The repository includes detailed remediation notes for the home test scenarios:
 Two comprehensive reports are available:
 1. **Interactive HTML Dashboard**: Open [`evidence/security-report.html`](evidence/security-report.html) in any browser for an executive dashboard with status cards and tables.
 2. **Raw Log File**: Inspect [`evidence/scan-results.md`](evidence/scan-results.md) for terminal output logs from all 6 scanners.
+
+---
+
+## 10. Pipeline Execution Results
+
+All automated security controls and deployment gates executed successfully with zero blockers on GitHub Actions:
+
+![CI/CD Pipeline Security Gates Passed](evidence/pipeline-success.png)
+
